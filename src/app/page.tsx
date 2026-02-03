@@ -201,7 +201,7 @@ export default function Home() {
             </p>
             <Link 
               href="/profile"
-              className="mt-2 gitinline-flex items-center gap-2 text-emerald-600 font-semibold hover:text-emerald-800 transition-colors group"
+              className="mt-4 inline-flex items-center gap-2 text-emerald-600 font-semibold hover:text-emerald-800 transition-colors group"
             >
               Read Full Corporate Profile
               <span className="bg-emerald-100 p-1 rounded-full group-hover:bg-emerald-200 transition-colors">
