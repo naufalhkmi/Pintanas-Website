@@ -1,9 +1,10 @@
 "use client";
 
-import { Menu, X, Leaf, Building2, Cpu, Sprout, Mail, Phone, MapPin, Target, Eye,ChevronLeft, ChevronRight } from 'lucide-react';
+import { Menu, X, Leaf, Building2, Cpu, Sprout, Mail, Phone, MapPin, Target, Eye,ChevronLeft, ChevronRight,ArrowRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback'; // Ensure this path is correct based on your folder
 import { ScrollReveal } from '@/components/ScrollReveal';
+import Link from "next/link";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -198,6 +199,15 @@ export default function Home() {
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               A Bumiputera-owned company bridging traditional plantation management with modern agri-tech infrastructure
             </p>
+            <Link 
+              href="/profile"
+              className="inline-flex items-center gap-2 text-emerald-600 font-semibold hover:text-emerald-800 transition-colors group"
+            >
+              Read Full Corporate Profile
+              <span className="bg-emerald-100 p-1 rounded-full group-hover:bg-emerald-200 transition-colors">
+                 <ArrowRight className="size-4" /> {/* Make sure to import ArrowRight at top */}
+              </span>
+            </Link>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
