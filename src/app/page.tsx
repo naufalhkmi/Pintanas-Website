@@ -1,21 +1,56 @@
-"use client"; // <--- THIS IS CRITICAL FOR useState
+"use client";
 
-import { Menu, X, Leaf, Building2, Cpu, Sprout, Mail, Phone, MapPin, Target, Eye } from 'lucide-react';
-import { useState } from 'react';
-// We updated this import path to match your folder structure
-import { ImageWithFallback } from '@/components/figma/ImageWithFallback'; 
+import { Menu, X, Leaf, Building2, Cpu, Sprout, Mail, Phone, MapPin, Target, Eye,ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ImageWithFallback } from '@/components/figma/ImageWithFallback'; // Ensure this path is correct based on your folder
+import { ScrollReveal } from '@/components/ScrollReveal';
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Hero carousel slides
+  const heroSlides = [
+    {
+      image: "/oil-palm-tree.avif", // Using your local image
+      title: "Empowering Sustainable Agriculture",
+      subtitle: "Bridging Traditional Plantation Management with Modern Agri-Tech Infrastructure"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      title: "Advanced Agri-Tech Solutions",
+      subtitle: "IoT Sensors & AI-Powered Analytics for Smart Farming"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      title: "Infrastructure Excellence",
+      subtitle: "Building the Foundation for Modern Agricultural Success"
+    }
+  ];
+
+  // Auto-advance carousel
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 10000);
+    return () => clearInterval(timer);
+  }, [heroSlides.length, currentSlide]);
+   const prevSlide = () => {
+    setCurrentSlide((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1));
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+  };
 
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="bg-white border-b border-gray-200 fixed w-full top-0 z-50">
+      <nav className="bg-white/80 backdrop-blur-lg border-b border-gray-200/50 fixed w-full top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2">
-              <Leaf className="size-8 text-green-700" />
+              <Leaf className="size-8 text-emerald-700" />
               <div>
                 <h1 className="font-bold text-xl text-gray-900">Pintanas Utama</h1>
                 <p className="text-xs text-gray-600">Sdn. Bhd.</p>
@@ -24,11 +59,11 @@ export default function Home() {
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
-              <a href="#about" className="text-gray-700 hover:text-green-700 transition">About</a>
-              <a href="#services" className="text-gray-700 hover:text-green-700 transition">Services</a>
-              <a href="#leadership" className="text-gray-700 hover:text-green-700 transition">Leadership</a>
-              <a href="#projects" className="text-gray-700 hover:text-green-700 transition">Projects</a>
-              <a href="#contact" className="text-gray-700 hover:text-green-700 transition">Contact</a>
+              <a href="#about" className="text-gray-700 hover:text-emerald-700 transition">About</a>
+              <a href="#services" className="text-gray-700 hover:text-emerald-700 transition">Services</a>
+              <a href="#leadership" className="text-gray-700 hover:text-emerald-700 transition">Leadership</a>
+              <a href="#projects" className="text-gray-700 hover:text-emerald-700 transition">Projects</a>
+              <a href="#contact" className="text-gray-700 hover:text-emerald-700 transition">Contact</a>
             </div>
 
             {/* Mobile Menu Button */}
@@ -45,45 +80,118 @@ export default function Home() {
         {mobileMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-200">
             <div className="px-4 py-4 space-y-3">
-              <a href="#about" className="block text-gray-700 hover:text-green-700">About</a>
-              <a href="#services" className="block text-gray-700 hover:text-green-700">Services</a>
-              <a href="#leadership" className="block text-gray-700 hover:text-green-700">Leadership</a>
-              <a href="#projects" className="block text-gray-700 hover:text-green-700">Projects</a>
-              <a href="#contact" className="block text-gray-700 hover:text-green-700">Contact</a>
+              <a href="#about" className="block text-gray-700 hover:text-emerald-700">About</a>
+              <a href="#services" className="block text-gray-700 hover:text-emerald-700">Services</a>
+              <a href="#leadership" className="block text-gray-700 hover:text-emerald-700">Leadership</a>
+              <a href="#projects" className="block text-gray-700 hover:text-emerald-700">Projects</a>
+              <a href="#contact" className="block text-gray-700 hover:text-emerald-700">Contact</a>
             </div>
           </div>
         )}
       </nav>
 
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center mt-16">
-        <div className="absolute inset-0 z-0">
-          <ImageWithFallback
-            src= "/oil-palm-tree.avif"
-            alt="Palm Oil Plantation"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-green-900/50 to-blue-900/40"></div>
-        </div>
+      <section className="relative h-screen flex items-center justify-center mt-16 overflow-hidden">
+        {/* Carousel Images */}
+        {heroSlides.map((slide, index) => (
+          <div 
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100 z-0' : 'opacity-0 -z-10'}`}
+          >
+            <ImageWithFallback
+              src={slide.image}
+              alt={slide.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/80 to-blue-900/70"></div>
+          </div>
+        ))}
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
-            Empowering Sustainable Agriculture
-          </h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
-            Bridging Traditional Plantation Management with Modern Agri-Tech Infrastructure
-          </p>
-          <a
-            href="#services"
-            className="inline-block bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg text-lg transition"
-          >
-            Explore Our Services
-          </a>
+          <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
+              {heroSlides[currentSlide].title}
+            </h1>
+            <p className="text-lg md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
+              {heroSlides[currentSlide].subtitle}
+            </p>
+            <a
+              href="#services"
+              className="inline-block bg-gradient-to-r from-lime-500 to-emerald-600 hover:from-lime-600 hover:to-emerald-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition shadow-lg hover:shadow-xl hover:scale-105"
+            >
+              Explore Our Services
+            </a>
+          </div>
+        </div>
+
+        <button 
+          onClick={prevSlide}
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 backdrop-blur-sm p-3 rounded-full text-white transition-all duration-300 group"
+          aria-label="Previous Slide"
+        >
+          <ChevronLeft className="size-8 group-hover:scale-110 transition-transform" />
+        </button>
+
+        {/* Right Arrow */}
+        <button 
+          onClick={nextSlide}
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 backdrop-blur-sm p-3 rounded-full text-white transition-all duration-300 group"
+          aria-label="Next Slide"
+        >
+          <ChevronRight className="size-8 group-hover:scale-110 transition-transform" />
+        </button>
+
+        {/* Slide Indicators (Dots) */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          {heroSlides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentSlide ? "bg-white scale-125" : "bg-white/40 hover:bg-white/60"
+              }`}
+            />
+          ))}
         </div>
       </section>
 
+      {/* Stats Bar
+      <section className="bg-slate-800 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap justify-center items-center gap-8 text-center">
+            <div className="flex items-center gap-3 text-white">
+              <div className="bg-emerald-500/20 p-3 rounded-full">
+                <Leaf className="size-6 text-emerald-400" />
+              </div>
+              <div className="text-left">
+                <p className="text-sm text-gray-300">Registered with</p>
+                <p className="font-bold">MPOB</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 text-white">
+              <div className="bg-blue-500/20 p-3 rounded-full">
+                <Building2 className="size-6 text-blue-400" />
+              </div>
+              <div className="text-left">
+                <p className="text-sm text-gray-300">Certified by</p>
+                <p className="font-bold">CIDB</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 text-white">
+              <div className="bg-purple-500/20 p-3 rounded-full">
+                <Target className="size-6 text-purple-400" />
+              </div>
+              <div className="text-left">
+                <p className="text-sm text-gray-300">Certified</p>
+                <p className="font-bold">Bumiputera Enterprise</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> */}
+
       {/* About Section - Vision & Mission */}
-      <section id="about" className="py-20 bg-gray-50">
+      <section id="about" className="py-20 bg-green-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Who We Are</h2>
@@ -94,35 +202,39 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Vision */}
-            <div className="bg-white p-8 rounded-xl shadow-md">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="bg-green-100 p-4 rounded-lg">
-                  <Eye className="size-8 text-green-700" />
+            <ScrollReveal direction="left">
+              <div className="bg-white p-8 rounded-3xl shadow-lg hover:shadow-xl transition">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="bg-emerald-100 p-4 rounded-2xl">
+                    <Eye className="size-8 text-emerald-700" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">Our Vision</h3>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900">Our Vision</h3>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  To be a leading force in sustainable agriculture, creating high-impact solutions that harmonize nature with technology for future generations.
+                </p>
               </div>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                To be a leading force in sustainable agriculture, creating high-impact solutions that harmonize nature with technology for future generations.
-              </p>
-            </div>
+            </ScrollReveal>
 
             {/* Mission */}
-            <div className="bg-white p-8 rounded-xl shadow-md">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="bg-blue-100 p-4 rounded-lg">
-                  <Target className="size-8 text-blue-700" />
+            <ScrollReveal direction="right" delay={0.2}>
+              <div className="bg-white p-8 rounded-3xl shadow-lg hover:shadow-xl transition">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="bg-blue-100 p-4 rounded-2xl">
+                    <Target className="size-8 text-blue-700" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">Our Mission</h3>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900">Our Mission</h3>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  To deliver professional, competent workforce solutions and cutting-edge technology that empower sustainable plantation management and agricultural excellence.
+                </p>
               </div>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                To deliver professional, competent workforce solutions and cutting-edge technology that empower sustainable plantation management and agricultural excellence.
-              </p>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
 
-      {/* Leadership Section */}
+      {/* --- OLD DESIGN: Board of Directors --- */}
       <section id="leadership" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -184,8 +296,8 @@ export default function Home() {
         </div>
       </section>
 
-     {/* Organization Chart / Key Team Section */}
-      <section id="team" className="py-20 bg-white border-t border-gray-100">
+      {/* --- OLD DESIGN: Key Management Team (Suhaimi Pyramid) --- */}
+      <section id="team" className="py-20 bg-green-50 border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Key Management Team</h2>
@@ -196,7 +308,7 @@ export default function Home() {
 
           {/* ROW 1: Project Manager (Suhaimi) - Centered & Full Row */}
           <div className="flex justify-center mb-10">
-            <div className="bg-white border border-green-100 rounded-xl p-8 text-center shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 max-w-sm w-full">
+            <div className="bg-white border border-green-700 rounded-xl p-8 text-center shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 max-w-sm w-full">
               <div className="w-28 h-28 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-4 text-3xl font-bold text-green-700">
                 S
               </div>
@@ -209,7 +321,7 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             
             {/* Staff 1 */}
-            <div className="bg-gray-50 rounded-xl p-6 text-center hover:shadow-lg transition group">
+            <div className="bg-white border border-blue-700 rounded-xl p-6 text-center hover:shadow-lg transition group">
               <div className="w-20 h-20 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-4 text-xl font-bold text-blue-700 group-hover:bg-blue-600 group-hover:text-white transition">
                 T
               </div>
@@ -218,7 +330,7 @@ export default function Home() {
             </div>
 
             {/* Staff 2 */}
-            <div className="bg-gray-50 rounded-xl p-6 text-center hover:shadow-lg transition group">
+            <div className="bg-white border border-orange-700 rounded-xl p-6 text-center hover:shadow-lg transition group">
               <div className="w-20 h-20 mx-auto bg-orange-100 rounded-full flex items-center justify-center mb-4 text-xl font-bold text-orange-700 group-hover:bg-orange-600 group-hover:text-white transition">
                 A
               </div>
@@ -227,7 +339,7 @@ export default function Home() {
             </div>
 
             {/* Staff 3 */}
-            <div className="bg-gray-50 rounded-xl p-6 text-center hover:shadow-lg transition group">
+            <div className="bg-white border border-purple-700 rounded-xl p-6 text-center hover:shadow-lg transition group">
               <div className="w-20 h-20 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-4 text-xl font-bold text-purple-700 group-hover:bg-purple-600 group-hover:text-white transition">
                 K
               </div>
@@ -236,7 +348,7 @@ export default function Home() {
             </div>
 
             {/* Staff 4 */}
-            <div className="bg-gray-50 rounded-xl p-6 text-center hover:shadow-lg transition group">
+            <div className="bg-white border border-teal-700 rounded-xl p-6 text-center hover:shadow-lg transition group">
               <div className="w-20 h-20 mx-auto bg-teal-100 rounded-full flex items-center justify-center mb-4 text-xl font-bold text-teal-700 group-hover:bg-teal-600 group-hover:text-white transition">
                 N
               </div>
@@ -245,7 +357,7 @@ export default function Home() {
             </div>
 
              {/* Staff 5 */}
-             <div className="bg-gray-50 rounded-xl p-6 text-center hover:shadow-lg transition group">
+             <div className="bg-white border border-teal-700 rounded-xl p-6 text-center hover:shadow-lg transition group">
               <div className="w-20 h-20 mx-auto bg-teal-100 rounded-full flex items-center justify-center mb-4 text-xl font-bold text-teal-700 group-hover:bg-teal-600 group-hover:text-white transition">
                 M
               </div>
@@ -254,7 +366,7 @@ export default function Home() {
             </div>
 
             {/* Staff 6 */}
-            <div className="bg-gray-50 rounded-xl p-6 text-center hover:shadow-lg transition group">
+            <div className="bg-white border border-pink-700 rounded-xl p-6 text-center hover:shadow-lg transition group">
               <div className="w-20 h-20 mx-auto bg-pink-100 rounded-full flex items-center justify-center mb-4 text-xl font-bold text-pink-700 group-hover:bg-pink-600 group-hover:text-white transition">
                 S
               </div>
@@ -266,7 +378,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 bg-gray-50">
+      <section id="services" className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Services</h2>
@@ -277,9 +389,9 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Plantation Management */}
-            <div className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition">
-              <div className="bg-green-100 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
-                <Leaf className="size-8 text-green-700" />
+            <div className="bg-green-100 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+              <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                <Leaf className="size-10 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Plantation Management</h3>
               <p className="text-gray-600 mb-4">
@@ -287,28 +399,28 @@ export default function Home() {
               </p>
               <ul className="space-y-2 text-gray-700">
                 <li className="flex items-start gap-2">
-                  <span className="text-green-600 mt-1">✓</span>
+                  <span className="text-emerald-600 mt-1">✓</span>
                   <span>Fertilization & Soil Management</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-600 mt-1">✓</span>
+                  <span className="text-emerald-600 mt-1">✓</span>
                   <span>Integrated Pest Control</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-600 mt-1">✓</span>
+                  <span className="text-emerald-600 mt-1">✓</span>
                   <span>Fresh Fruit Bunches (FFB) Harvesting</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-600 mt-1">✓</span>
+                  <span className="text-emerald-600 mt-1">✓</span>
                   <span>Crop Health Monitoring</span>
                 </li>
               </ul>
             </div>
 
             {/* Civil & Infrastructure */}
-            <div className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition">
-              <div className="bg-blue-100 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
-                <Building2 className="size-8 text-blue-700" />
+            <div className="bg-blue-100 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+              <div className="bg-gradient-to-br from-blue-500 to-blue-600 w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                <Building2 className="size-10 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Civil & Infrastructure</h3>
               <p className="text-gray-600 mb-4">
@@ -335,9 +447,9 @@ export default function Home() {
             </div>
 
             {/* Agri-Tech */}
-            <div className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition">
-              <div className="bg-purple-100 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
-                <Cpu className="size-8 text-purple-700" />
+            <div className="bg-purple-100 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+              <div className="bg-gradient-to-br from-purple-500 to-purple-600 w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                <Cpu className="size-10 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Agri-Tech (AI & IoT)</h3>
               <p className="text-gray-600 mb-4">
@@ -364,9 +476,9 @@ export default function Home() {
             </div>
 
             {/* Special Projects */}
-            <div className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition">
-              <div className="bg-orange-100 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
-                <Sprout className="size-8 text-orange-700" />
+            <div className="bg-orange-100 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+              <div className="bg-gradient-to-br from-orange-500 to-orange-600 w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                <Sprout className="size-10 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Special Projects</h3>
               <p className="text-gray-600 mb-4">
@@ -544,8 +656,10 @@ export default function Home() {
         </div>
       </section>
 
+      
+
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gray-50">
+      <section id="contact" className="py-20 bg-green-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Get in Touch</h2>
@@ -563,8 +677,8 @@ export default function Home() {
                 <div className="space-y-6">
                   {/* Address */}
                   <div className="flex items-start gap-4">
-                    <div className="bg-green-100 p-3 rounded-lg">
-                      <MapPin className="size-6 text-green-700" />
+                    <div className="bg-emerald-100 p-3 rounded-2xl">
+                      <MapPin className="size-6 text-emerald-700" />
                     </div>
                     <div>
                       <h4 className="font-bold text-gray-900 mb-1">Head Office</h4>
@@ -578,7 +692,7 @@ export default function Home() {
 
                   {/* Phone */}
                   <div className="flex items-start gap-4">
-                    <div className="bg-blue-100 p-3 rounded-lg">
+                    <div className="bg-blue-100 p-3 rounded-2xl">
                       <Phone className="size-6 text-blue-700" />
                     </div>
                     <div>
@@ -589,7 +703,7 @@ export default function Home() {
 
                   {/* Email */}
                   <div className="flex items-start gap-4">
-                    <div className="bg-purple-100 p-3 rounded-lg">
+                    <div className="bg-purple-100 p-3 rounded-2xl">
                       <Mail className="size-6 text-purple-700" />
                     </div>
                     <div>
@@ -601,11 +715,11 @@ export default function Home() {
               </div>
 
               {/* Company Registration */}
-              <div className="bg-white p-6 rounded-xl shadow-md">
+              <div className="bg-white p-6 rounded-3xl shadow-lg">
                 <h4 className="font-bold text-gray-900 mb-3">Company Registration</h4>
                 <p className="text-gray-700">
                   SSM Registration Number:<br />
-                  <span className="font-semibold text-green-700">202501046838 (1648246-U)</span>
+                  <span className="font-semibold text-emerald-700">202501046838 (1648246-U)</span>
                 </p>
                 <p className="text-sm text-gray-600 mt-4">
                   Certified Bumiputera Enterprise<br />
@@ -615,9 +729,9 @@ export default function Home() {
             </div>
 
             {/* Google Maps */}
-            <div className="h-[500px] rounded-xl overflow-hidden shadow-md">
+            <div className="h-[500px] rounded-3xl overflow-hidden shadow-lg">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.883395914652!2d101.123456!3d4.567890!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNMKwMzQnMDQuNCJOIDEwMcKwMDcnMjQuNCJF!5e0!3m2!1sen!2smy!4v1600000000000!5m2!1sen!2smy"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127116.89439678906!2d100.9846279!3d4.598611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31caa8a982e0bf23%3A0x3927986cd01f9a2a!2sIpoh%2C%20Perak%2C%20Malaysia!5e0!3m2!1sen!2s!4v1234567890"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -632,7 +746,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-slate-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-8">
             {/* Company Info */}
