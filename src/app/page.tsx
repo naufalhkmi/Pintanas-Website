@@ -267,7 +267,22 @@ export default function Home() {
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-1">Sazali Mohd Saleh</h3>
                 <p className="text-green-600 font-semibold mb-3">Chief Executive Officer</p>
-                <p className="text-gray-600">MBA | Strategic Leadership</p>
+                <p className="text-gray-600">An experienced entrepreneur specializing in business and palm oil plantation management. Holding a <span className="font-semibold text-gray-900">Diploma in Management</span>, he is also the proprietor of PETRONAS Station Batu Gajah.</p>
+              </div>
+              <div className="p-6">
+                        <p className="text-xs font-bold text-gray-400 uppercase mb-2">Core Expertise</p>
+                        <div className="flex flex-wrap gap-2">
+                          <span className="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium text-slate-600 shadow-sm">
+                            Operations Management
+                          </span>
+                          <span className="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium text-slate-600 shadow-sm">
+                            Strategic Marketing
+                          </span>
+                          <span className="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium text-slate-600 shadow-sm">
+                            HR Management
+                          </span>
+                        </div>
+                      
               </div>
             </div>
 
@@ -283,8 +298,23 @@ export default function Home() {
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-1">Pn. Salinda</h3>
                 <p className="text-green-600 font-semibold mb-3">Director</p>
-                <p className="text-gray-600">Legal Expert | Corporate Affairs</p>
+                <p className="text-gray-600">Experienced in account management, fixed assets, and corporate reporting. Holds a <span className="font-semibold text-gray-900">Bachelor of Business Management (Finance)</span> from UUM.</p>
               </div>
+
+              <div className="p-6" style={{ marginTop: '22px' }}>
+                  <p className="text-xs font-bold text-gray-400 uppercase mb-2">Technical Proficiency</p>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="px-3 py-1 bg-purple-50 text-purple-700 rounded-md text-xs font-medium border border-purple-100">
+                      RAMCO & ORACLE
+                    </span>
+                    <span className="px-3 py-1 bg-purple-50 text-purple-700 rounded-md text-xs font-medium border border-purple-100">
+                      Financial Analysis
+                    </span>
+                    <span className="px-3 py-1 bg-purple-50 text-purple-700 rounded-md text-xs font-medium border border-purple-100">
+                      Corporate Compliance
+                    </span>
+                  </div>
+                </div>
             </div>
 
             {/* Director 3 */}
@@ -299,8 +329,23 @@ export default function Home() {
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-1">Pn. Nur Anis</h3>
                 <p className="text-green-600 font-semibold mb-3">Director</p>
-                <p className="text-gray-600">Operations & Development</p>
+                <p className="text-gray-600">A practicing Advocate, Solicitor, and Syarie Lawyer leading <span className="font-semibold text-gray-900">Messrs. Anis Izana & Associates</span> in Ipoh. She holds a Bachelor of Laws (LL.B) and DSLP from IIUM.</p>
               </div>
+              <div className="p-6" style={{ marginTop: '22px' }}>
+                      <p className="text-xs font-bold text-gray-400 uppercase mb-2">Legal Expertise</p>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium text-slate-600 shadow-sm">
+                          Real Estate Law
+                        </span>
+                        <span className="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium text-slate-600 shadow-sm">
+                          Civil Litigation
+                        </span>
+                        <span className="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium text-slate-600 shadow-sm">
+                          Banking & Syariah
+                        </span>
+                      </div>
+                    </div>
+              
             </div>
           </div>
         </div>
